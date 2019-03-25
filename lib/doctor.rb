@@ -2,34 +2,31 @@ require_relative "./patient"
 require_relative "./appointment"
 
 class Doctor
+  
+  attr_accessor :name 
+  
+    @@all = []
+  
+def initialize(name)
+  @name = name 
+  @@all << self
+end
 
-  @@all = []
+def self.all
+  @@all
+end 
 
+def new_appointment(patient, date)
+  Appointment.new(patient, self, date)
+end
 
+def appointments
+  Appointment.all.select {|appointment| appointment.doctor == self}
+end
 
-  attr_accessor :name
-
-  def initialize(name)
-    @name = name
-    @@all << self
-  end
-
-  def self.all
-    @@all
-  end
-
-  def new_appointment(patient, date)
-    Appointment.new(date, self, patient)
-  end
-
-  def appointments
-    Appointment.all.select{|apt| apt.doctor == self}
-  end
-
-  def patients
-    appointments.map{|apt|apt.patient}
-
-  end
-
+def patients
+  appointments.map{|appoointment| appointment.patient}
+end
+  
 
 end
